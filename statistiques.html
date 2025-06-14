@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Statistiques - Suivi Énergétique Intelligent</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-dark bg-primary">
+        <div class="container" style="width: 1200px;">
+            <a class="navbar-brand" href="index.html">
+                <i class="bi bi-lightning-charge-fill me-2"></i>
+                Suivi Énergétique Intelligent
+            </a>
+            <div class="d-flex">
+                <ul class="navbar-nav d-flex flex-row">
+                    <li class="nav-item mx-2">
+                        <a class="nav-link" href="index.html"><i class="bi bi-speedometer2 me-1"></i>Dashboard</a>
+                    </li>
+                    <li class="nav-item mx-2">
+                        <a class="nav-link" href="historique.html"><i class="bi bi-clock-history me-1"></i>Historique</a>
+                    </li>
+                    <li class="nav-item mx-2">
+                        <a class="nav-link active" href="statistiques.html"><i class="bi bi-graph-up me-1"></i>Statistiques</a>
+                    </li>
+                    <li class="nav-item mx-2">
+                        <a class="nav-link" href="parametres.html"><i class="bi bi-gear me-1"></i>Paramètres</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container" style="width: 1200px;">
+        <!-- Filtres de période -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <div class="row align-items-end">
+                    <div class="col-md-3">
+                        <label class="form-label">Période d'analyse</label>
+                        <select class="form-select" id="analysisPeriod">
+                            <option value="week">Cette semaine</option>
+                            <option value="month">Ce mois</option>
+                            <option value="quarter">Ce trimestre</option>
+                            <option value="year">Cette année</option>
+                            <option value="custom">Personnalisé</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Date de début</label>
+                        <input type="date" class="form-control" id="startDate">
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Date de fin</label>
+                        <input type="date" class="form-control" id="endDate">
+                    </div>
+                    <div class="col-md-3">
+                        <button class="btn btn-primary w-100" id="updateStats">
+                            <i class="bi bi-arrow-clockwise me-1"></i>Actualiser
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cartes de statistiques -->
+        <div class="row mb-4">
+            <div class="col-md-3">
+                <div class="card text-white bg-primary h-100">
+                    <div class="card-body">
+                        <h6 class="card-title">Consommation totale</h6>
+                        <p class="card-text display-6" id="totalConsumption">-- kWh</p>
+                        <small class="text-white-50" id="consumptionTrend">
+                            <i class="bi bi-arrow-up-right"></i> +5% vs période précédente
+                        </small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-white bg-success h-100">
+                    <div class="card-body">
+                        <h6 class="card-title">Coût total</h6>
+                        <p class="card-text display-6" id="totalCost">-- FCFA</p>
+                        <small class="text-white-50" id="costTrend">
+                            <i class="bi bi-arrow-down-right"></i> -2% vs période précédente
+                        </small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-white bg-info h-100">
+                    <div class="card-body">
+                        <h6 class="card-title">Consommation moyenne/jour</h6>
+                        <p class="card-text display-6" id="avgConsumption">-- kWh</p>
+                        <small class="text-white-50" id="avgConsumptionTrend">
+                            <i class="bi bi-dash"></i> Stable
+                        </small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-white bg-warning h-100">
+                    <div class="card-body">
+                        <h6 class="card-title">Pic de consommation</h6>
+                        <p class="card-text display-6" id="peakConsumption">-- kW</p>
+                        <small class="text-white-50" id="peakTime">
+                            <i class="bi bi-clock"></i> À 14:30
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Graphiques d'analyse -->
+        <div class="row mb-4">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">
+                        <ul class="nav nav-tabs card-header-tabs" id="analysisTabs">
+                            <li class="nav-item">
+                                <a class="nav-link active" data-bs-toggle="tab" href="#consumptionTrend">Tendance de consommation</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-bs-toggle="tab" href="#costTrend">Tendance des coûts</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-bs-toggle="tab" href="#hourlyPattern">Motif horaire</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="card-body">
+                        <div class="tab-content">
+                            <div class="tab-pane fade show active" id="consumptionTrend">
+                                <canvas id="consumptionTrendChart" height="300"></canvas>
+                            </div>
+                            <div class="tab-pane fade" id="costTrend">
+                                <canvas id="costTrendChart" height="300"></canvas>
+                            </div>
+                            <div class="tab-pane fade" id="hourlyPattern">
+                                <canvas id="hourlyPatternChart" height="300"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        Répartition par appareil
+                    </div>
+                    <div class="card-body">
+                        <canvas id="deviceDistributionChart" height="300"></canvas>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        Comparaison avec la période précédente
+                    </div>
+                    <div class="card-body">
+                        <canvas id="comparisonChart" height="300"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tableau d'analyse -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">Analyse détaillée</h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Appareil</th>
+                                <th>Consommation (kWh)</th>
+                                <th>% du total</th>
+                                <th>Coût (FCFA)</th>
+                                <th>Temps d'utilisation</th>
+                                <th>Efficacité</th>
+                            </tr>
+                        </thead>
+                        <tbody id="analysisTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recommandations -->
+        <div class="card mb-4">
+            <div class="card-header bg-info text-white">
+                <i class="bi bi-lightbulb me-2"></i>Recommandations basées sur l'analyse
+            </div>
+            <div class="card-body">
+                <div id="recommendationsList"></div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer mt-4 py-3 bg-light text-center">
+        <div class="container" style="width: 1200px;">
+            <div class="row">
+                <div class="col-6">
+                    <h5>Suivi Énergétique Intelligent</h5>
+                    <p class="text-muted">Projet de Fin d'Études - Licence</p>
+                </div>
+                <div class="col-6">
+                    <p class="mb-0">
+                        <a href="#" class="text-decoration-none me-3">À propos</a>
+                        <a href="#" class="text-decoration-none me-3">Contact</a>
+                        <a href="aide.html" class="text-decoration-none">Aide</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/statistiques.js"></script>
+</body>
+</html> 

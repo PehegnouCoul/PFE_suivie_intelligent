@@ -19,16 +19,16 @@
       <div class="d-flex">
         <ul class="navbar-nav d-flex flex-row">
           <li class="nav-item mx-2">
-            <a class="nav-link active" href="#dashboard"><i class="bi bi-speedometer2 me-1"></i>Dashboard</a>
+            <a class="nav-link active" href="index.html"><i class="bi bi-speedometer2 me-1"></i>Dashboard</a>
           </li>
           <li class="nav-item mx-2">
-            <a class="nav-link" href="#historique"><i class="bi bi-clock-history me-1"></i>Historique</a>
+            <a class="nav-link" href="historique.html"><i class="bi bi-clock-history me-1"></i>Historique</a>
           </li>
           <li class="nav-item mx-2">
-            <a class="nav-link" href="#statistiques"><i class="bi bi-graph-up me-1"></i>Statistiques</a>
+            <a class="nav-link" href="statistiques.html"><i class="bi bi-graph-up me-1"></i>Statistiques</a>
           </li>
           <li class="nav-item mx-2">
-            <a class="nav-link" href="#parametres"><i class="bi bi-gear me-1"></i>Paramètres</a>
+            <a class="nav-link" href="parametres.html"><i class="bi bi-gear me-1"></i>Paramètres</a>
           </li>
         </ul>
         <div class="dropdown ms-4">
@@ -262,47 +262,9 @@
         <button class="btn btn-success me-2" onclick="exportData()">
           <i class="bi bi-download me-1"></i>Exporter
         </button>
-        <button class="btn btn-info" onclick="showSettings()">
+        <a href="parametres.html" class="btn btn-info">
           <i class="bi bi-gear me-1"></i>Paramètres
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal des paramètres -->
-  <div class="modal fade" id="settingsModal" tabindex="-1">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Paramètres</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-        </div>
-        <div class="modal-body">
-          <form id="settingsForm">
-            <div class="mb-3">
-              <label class="form-label">Seuil d'alerte de puissance (W)</label>
-              <input type="number" class="form-control" id="powerThreshold">
-            </div>
-            <div class="mb-3">
-              <label class="form-label">Objectif de consommation (kWh/jour)</label>
-              <input type="number" class="form-control" id="consumptionGoal">
-            </div>
-            <div class="mb-3">
-              <label class="form-label">Prix du kWh (FCFA)</label>
-              <input type="number" class="form-control" id="kwhPrice" step="1">
-            </div>
-            <div class="mb-3">
-              <div class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" id="notificationsEnabled">
-                <label class="form-check-label">Activer les notifications</label>
-              </div>
-            </div>
-          </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
-          <button type="button" class="btn btn-primary" onclick="saveSettings()">Enregistrer</button>
-        </div>
+        </a>
       </div>
     </div>
   </div>
@@ -318,7 +280,7 @@
           <p class="mb-0">
             <a href="#" class="text-decoration-none me-3">À propos</a>
             <a href="#" class="text-decoration-none me-3">Contact</a>
-            <a href="#" class="text-decoration-none">Aide</a>
+            <a href="aide.html" class="text-decoration-none">Aide</a>
           </p>
         </div>
       </div>

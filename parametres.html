@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paramètres - Suivi Énergétique Intelligent</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-dark bg-primary">
+        <div class="container" style="width: 1200px;">
+            <a class="navbar-brand" href="index.html">
+                <i class="bi bi-lightning-charge-fill me-2"></i>
+                Suivi Énergétique Intelligent
+            </a>
+            <div class="d-flex">
+                <ul class="navbar-nav d-flex flex-row">
+                    <li class="nav-item mx-2">
+                        <a class="nav-link" href="index.html"><i class="bi bi-speedometer2 me-1"></i>Dashboard</a>
+                    </li>
+                    <li class="nav-item mx-2">
+                        <a class="nav-link" href="historique.html"><i class="bi bi-clock-history me-1"></i>Historique</a>
+                    </li>
+                    <li class="nav-item mx-2">
+                        <a class="nav-link" href="statistiques.html"><i class="bi bi-graph-up me-1"></i>Statistiques</a>
+                    </li>
+                    <li class="nav-item mx-2">
+                        <a class="nav-link active" href="parametres.html"><i class="bi bi-gear me-1"></i>Paramètres</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container" style="width: 1200px;">
+        <div class="row">
+            <!-- Menu latéral -->
+            <div class="col-md-3">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">Paramètres</h5>
+                    </div>
+                    <div class="list-group list-group-flush" id="settingsMenu">
+                        <a href="#general" class="list-group-item list-group-item-action active" data-bs-toggle="list">
+                            <i class="bi bi-gear me-2"></i>Général
+                        </a>
+                        <a href="#appareils" class="list-group-item list-group-item-action" data-bs-toggle="list">
+                            <i class="bi bi-device-hdd me-2"></i>Appareils
+                        </a>
+                        <a href="#alertes" class="list-group-item list-group-item-action" data-bs-toggle="list">
+                            <i class="bi bi-bell me-2"></i>Alertes
+                        </a>
+                        <a href="#notifications" class="list-group-item list-group-item-action" data-bs-toggle="list">
+                            <i class="bi bi-envelope me-2"></i>Notifications
+                        </a>
+                        <a href="#export" class="list-group-item list-group-item-action" data-bs-toggle="list">
+                            <i class="bi bi-download me-2"></i>Export/Import
+                        </a>
+                        <a href="#compte" class="list-group-item list-group-item-action" data-bs-toggle="list">
+                            <i class="bi bi-person me-2"></i>Compte
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contenu des paramètres -->
+            <div class="col-md-9">
+                <div class="tab-content">
+                    <!-- Paramètres généraux -->
+                    <div class="tab-pane fade show active" id="general">
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <h5 class="mb-0">Paramètres généraux</h5>
+                            </div>
+                            <div class="card-body">
+                                <form id="generalSettingsForm">
+                                    <div class="mb-3">
+                                        <label class="form-label">Prix du kWh (FCFA)</label>
+                                        <input type="number" class="form-control" id="kwhPrice" step="0.01">
+                                        <div class="form-text">Prix actuel de l'électricité par kWh</div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Objectif de consommation (kWh/jour)</label>
+                                        <input type="number" class="form-control" id="consumptionGoal">
+                                        <div class="form-text">Objectif quotidien de consommation d'énergie</div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Fuseau horaire</label>
+                                        <select class="form-select" id="timezone">
+                                            <option value="Africa/Dakar">Dakar (GMT+0)</option>
+                                            <option value="Africa/Abidjan">Abidjan (GMT+0)</option>
+                                            <option value="Africa/Lagos">Lagos (GMT+1)</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" id="darkMode">
+                                            <label class="form-check-label">Mode sombre</label>
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Enregistrer</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Gestion des appareils -->
+                    <div class="tab-pane fade" id="appareils">
+                        <div class="card mb-4">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0">Gestion des appareils</h5>
+                                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addDeviceModal">
+                                    <i class="bi bi-plus-lg me-1"></i>Ajouter un appareil
+                                </button>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>Nom</th>
+                                                <th>Type</th>
+                                                <th>Puissance (W)</th>
+                                                <th>Statut</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="devicesList"></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Configuration des alertes -->
+                    <div class="tab-pane fade" id="alertes">
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <h5 class="mb-0">Configuration des alertes</h5>
+                            </div>
+                            <div class="card-body">
+                                <form id="alertsSettingsForm">
+                                    <div class="mb-3">
+                                        <label class="form-label">Seuil d'alerte de puissance (W)</label>
+                                        <input type="number" class="form-control" id="powerThreshold">
+                                        <div class="form-text">Seuil au-delà duquel une alerte sera déclenchée</div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Seuil d'alerte de consommation (kWh)</label>
+                                        <input type="number" class="form-control" id="consumptionThreshold">
+                                        <div class="form-text">Seuil quotidien de consommation</div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Seuil d'alerte de coût (FCFA)</label>
+                                        <input type="number" class="form-control" id="costThreshold">
+                                        <div class="form-text">Seuil quotidien de coût</div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="enablePowerAlerts">
+                                            <label class="form-check-label">Activer les alertes de puissance</label>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="enableConsumptionAlerts">
+                                            <label class="form-check-label">Activer les alertes de consommation</label>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="enableCostAlerts">
+                                            <label class="form-check-label">Activer les alertes de coût</label>
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Enregistrer</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Configuration des notifications -->
+                    <div class="tab-pane fade" id="notifications">
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <h5 class="mb-0">Configuration des notifications</h5>
+                            </div>
+                            <div class="card-body">
+                                <form id="notificationsSettingsForm">
+                                    <div class="mb-3">
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" id="enableNotifications">
+                                            <label class="form-check-label">Activer les notifications</label>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Email de notification</label>
+                                        <input type="email" class="form-control" id="notificationEmail">
+                                    </div>
+                                    <div class="mb-3">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="notifyAlerts">
+                                            <label class="form-check-label">Notifications pour les alertes</label>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="notifyReports">
+                                            <label class="form-check-label">Notifications pour les rapports</label>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="notifyAchievements">
+                                            <label class="form-check-label">Notifications pour les réalisations</label>
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Enregistrer</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Export/Import -->
+                    <div class="tab-pane fade" id="export">
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <h5 class="mb-0">Export/Import des données</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-4">
+                                    <h6>Export des données</h6>
+                                    <p class="text-muted">Exportez vos données de consommation au format CSV ou JSON</p>
+                                    <div class="d-flex gap-2">
+                                        <button class="btn btn-success" onclick="exportData('csv')">
+                                            <i class="bi bi-file-earmark-spreadsheet me-1"></i>Exporter en CSV
+                                        </button>
+                                        <button class="btn btn-info" onclick="exportData('json')">
+                                            <i class="bi bi-file-earmark-code me-1"></i>Exporter en JSON
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="mb-4">
+                                    <h6>Import des données</h6>
+                                    <p class="text-muted">Importez des données depuis un fichier CSV ou JSON</p>
+                                    <div class="mb-3">
+                                        <input type="file" class="form-control" id="importFile" accept=".csv,.json">
+                                    </div>
+                                    <button class="btn btn-primary" onclick="importData()">
+                                        <i class="bi bi-upload me-1"></i>Importer
+                                    </button>
+                                </div>
+                                <div class="mb-4">
+                                    <h6>Sauvegarde des paramètres</h6>
+                                    <p class="text-muted">Sauvegardez ou restaurez vos paramètres</p>
+                                    <div class="d-flex gap-2">
+                                        <button class="btn btn-secondary" onclick="backupSettings()">
+                                            <i class="bi bi-download me-1"></i>Sauvegarder
+                                        </button>
+                                        <button class="btn btn-secondary" onclick="restoreSettings()">
+                                            <i class="bi bi-upload me-1"></i>Restaurer
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Paramètres du compte -->
+                    <div class="tab-pane fade" id="compte">
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <h5 class="mb-0">Paramètres du compte</h5>
+                            </div>
+                            <div class="card-body">
+                                <form id="accountSettingsForm">
+                                    <div class="mb-3">
+                                        <label class="form-label">Nom d'utilisateur</label>
+                                        <input type="text" class="form-control" id="username">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Email</label>
+                                        <input type="email" class="form-control" id="email">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Mot de passe actuel</label>
+                                        <input type="password" class="form-control" id="currentPassword">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Nouveau mot de passe</label>
+                                        <input type="password" class="form-control" id="newPassword">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Confirmer le nouveau mot de passe</label>
+                                        <input type="password" class="form-control" id="confirmPassword">
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Mettre à jour</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal d'ajout d'appareil -->
+    <div class="modal fade" id="addDeviceModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Ajouter un appareil</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addDeviceForm">
+                        <div class="mb-3">
+                            <label class="form-label">Nom de l'appareil</label>
+                            <input type="text" class="form-control" id="deviceName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Type d'appareil</label>
+                            <select class="form-select" id="deviceType" required>
+                                <option value="">Sélectionner un type</option>
+                                <option value="refrigerateur">Réfrigérateur</option>
+                                <option value="climatiseur">Climatiseur</option>
+                                <option value="televiseur">Téléviseur</option>
+                                <option value="lave-linge">Lave-linge</option>
+                                <option value="four">Four</option>
+                                <option value="autre">Autre</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Puissance nominale (W)</label>
+                            <input type="number" class="form-control" id="devicePower" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Emplacement</label>
+                            <input type="text" class="form-control" id="deviceLocation">
+                        </div>
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="deviceActive">
+                                <label class="form-check-label">Appareil actif</label>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                    <button type="button" class="btn btn-primary" onclick="saveDevice()">Ajouter</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer mt-4 py-3 bg-light text-center">
+        <div class="container" style="width: 1200px;">
+            <div class="row">
+                <div class="col-6">
+                    <h5>Suivi Énergétique Intelligent</h5>
+                    <p class="text-muted">Projet de Fin d'Études - Licence</p>
+                </div>
+                <div class="col-6">
+                    <p class="mb-0">
+                        <a href="#" class="text-decoration-none me-3">À propos</a>
+                        <a href="#" class="text-decoration-none me-3">Contact</a>
+                        <a href="aide.html" class="text-decoration-none">Aide</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/parametres.js"></script>
+</body>
+</html> 

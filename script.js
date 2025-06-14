@@ -55,18 +55,22 @@ function setupEventListeners() {
 // Fonction principale de récupération des données
 async function fetchData() {
   try {
-      // Simuler des données pour le moment
-      const simulatedData = generateSimulatedData();
+      // TODO: Remplacer par un appel API réel
+      const response = await fetch('/api/energy-data');
+      if (!response.ok) {
+          throw new Error('Erreur lors de la récupération des données');
+      }
+      const data = await response.json();
       
       // Mettre à jour l'état
-      STATE.currentData = simulatedData;
-      STATE.filteredData = [...simulatedData];
+      STATE.currentData = data;
+      STATE.filteredData = [...data];
       
       // Mettre à jour l'interface
-      updateDashboard(simulatedData);
-      updateCharts(simulatedData);
-      updateTable(simulatedData);
-      checkAlerts(simulatedData);
+      updateDashboard(data);
+      updateCharts(data);
+      updateTable(data);
+      checkAlerts(data);
       
       // Ajouter une notification de succès
       addNotification('Données actualisées avec succès', 'success');
@@ -75,38 +79,6 @@ async function fetchData() {
       console.error('Erreur lors de la récupération des données:', error);
       addNotification('Erreur lors de la récupération des données', 'error');
   }
-}
-
-// Génération de données simulées
-function generateSimulatedData() {
-  const devices = ['Réfrigérateur', 'Climatiseur', 'Téléviseur', 'Lave-linge', 'Four'];
-  const data = [];
-  const now = new Date();
-  
-  for (let i = 0; i < 24; i++) {
-      const time = new Date(now);
-      time.setHours(now.getHours() - i);
-      
-      const device = devices[Math.floor(Math.random() * devices.length)];
-      const voltage = 220 + (Math.random() * 10 - 5);
-      const current = Math.random() * 3;
-      const power = voltage * current;
-      
-      const cost = (power * CONFIG.kwhPrice / 1000).toFixed(0); // Coût en FCFA
-      
-      data.push({
-          timestamp: time,
-          time: time.toLocaleTimeString(),
-          date: time.toLocaleDateString(),
-          voltage: voltage.toFixed(1),
-          current: current.toFixed(2),
-          power: power.toFixed(2),
-          device: device,
-          cost: cost
-      });
-  }
-  
-  return data.reverse();
 }
 
 // Mise à jour du tableau de bord
